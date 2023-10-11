@@ -1,0 +1,15 @@
+body {
+  background-color: darkgray;
+}
+
+.container {
+  width: 80%;
+  padding: 10%;
+}
+
+.resizable {
+  padding: 2%;
+  resize: both;
+  overflow: scroll;
+  box-shadow: 1px 1px 2px;
+}

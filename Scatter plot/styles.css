@@ -1,0 +1,99 @@
+:root {
+  /*Color Variables*/
+  --primary-color: #680000;
+  --light-color: #F8F8F8;
+  --dark-color: #020202;
+  --soft-color: #495057;
+
+  --secondary-color: #444444;
+  --yellow-color: #ffc107;
+
+  /*Font Families*/
+  --heading-font: "Montserrat-Bold";
+  --body-font: "Montserrat";
+  --specific-font: "Ubuntu";
+  --light-font: "Montserrat-Light";
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  height : 100vh;
+  position : relative;
+}
+
+section {
+    padding-top: 2%;
+}
+
+svg {
+  margin: 1rem 2rem
+}
+
+li div {
+  margin-bottom: 8%;
+}
+
+.container-fluid {
+  padding: 3% 7%;
+}
+
+.container {
+  margin: 3%;
+}
+
+.container ul.list-head-section {
+  padding: 2%;
+}
+
+.dark-section {
+  background-color: var(--primary-color, #020202);
+  color: var(--light-color, #f8f8f8);
+}
+
+.white-section {
+  background-color: var(--light-color, #f8f8f8);
+  color: var(--dark-color, #020202);
+}
+
+.big-heading {
+  font-size: 3rem;
+  line-height: 1.5;
+  margin-bottom: 5%;
+}
+
+.section-heading {
+  font-size: 1.5rem;
+  font-family: var(--specific-font, "Times New Roman");
+  line-height: 1.5;
+  padding: auto 5%;
+  text-transform: uppercase;
+}
+
+/* chart Bar*/
+
+#title {
+  font-family: "Montserrat";
+  font-style: italic;
+  font-weight: bold;
+}
+
+svg.svg-chart {
+  margin-bottom : 15px;
+}
+
+#tooltip {
+  fill : red;
+}
+
+#footer {
+  text-align: center;
+  background-color: var(--secondary-color, #020202);
+  color: var(--light-color, white);
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100vw;
+}
