@@ -1,0 +1,99 @@
+:root {
+    
+    /* Color Variables */
+    --primary-color: #680000;
+    --secondary-color: #FFC107;
+    --dark-color: #212121;
+    --gray-color: #757575;
+    --light-color: #FAFAFA;
+    --white-color: white;
+}
+
+body {
+    background-color: var(--light-color);
+}
+
+h1,h2,h3,h4,h5,h6 {
+    margin: 5%;
+}
+
+p {
+    font-size: 14px;
+    font-weight: initial;
+    margin: 5%;
+}
+
+.container.pop-up {
+    width: 80%;
+    margin-top: 10%;
+    padding: 7% 0 0;
+    background-color: var(--dark-color, black);
+    border-radius: 5%;
+  box-shadow: 1px 1px 2px;
+}
+
+.pop-up-view {
+    position: relative;
+    background-color: var(--white-color, white);
+    padding: 5% 7%;
+    font-size: 15px;
+    max-height: 450px;
+    border-radius: 5%;
+}
+
+.close-button {
+    color: var(--primary-color, red);
+    position: absolute;
+    font-size: 3.5em;
+    top: 2.5%;
+    right: 10%;
+}
+
+.cta-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15%;
+}
+
+.cta-div button {
+    width: 40%;
+    margin-bottom: 2.5%;
+}
+
+.btn-dark  {
+    background-color : var(--primary-color, black);
+    color: var(--light-color, white);
+}
+
+.btn-outline-dark {
+     color: var(--primary-color, black);
+     border-color: var(--primary-color, black);
+}
+
+.btn-outline-dark:hover {
+    background-color : var(--primary-color, black);
+    color: var(--light-color, white);
+}
+
+.expand-view-button {
+    position: absolute;
+    background-color: var(--primary-color, black);
+    color: var(--white-color, white);
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    font-size: 1.75em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 7.5%;
+    bottom: 10%;
+}
+
+.clicked {
+    background-color: var(--white-color, white);
+    color: var(--gray-color, darkgray);
+    opacity: 50%;
+}
