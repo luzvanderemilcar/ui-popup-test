@@ -24,8 +24,10 @@ p {
 }
 
 .container.pop-up {
+    position: absolute;
     width: 80%;
-    margin-top: 10%;
+    top: 10%;
+    left: 20%;
     padding: 7% 0 0;
     background-color: var(--dark-color, black);
     border-radius: 5%;
@@ -95,5 +97,5 @@ p {
 .clicked {
     background-color: var(--white-color, white);
     color: var(--gray-color, darkgray);
-    opacity: 50%;
+    opacity: 25%;
 }
