@@ -4,6 +4,7 @@
     --primary-color: #680000;
     --secondary-color: #FFC107;
     --dark-color: #212121;
+    --dark-gray-color : #626262;
     --gray-color: #757575;
     --light-color: #FAFAFA;
     --white-color: white;
@@ -11,6 +12,7 @@
 
 body {
     background-color: var(--light-color);
+    margin: 3px;
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -23,17 +25,29 @@ p {
     margin: 5%;
 }
 
+.product-div {
+    margin: 1.5rem;
+}
 .container.pop-up {
     position: absolute;
+    display: none;
     width: 80%;
     top: 10%;
-    left: 20%;
-    padding: 7% 0 0;
+    left: 10%;
+    padding: 0;
     background-color: var(--dark-color, black);
     border-radius: 5%;
-  box-shadow: 1px 1px 2px;
+  box-shadow: 2px 2px 3px;
 }
 
+.top-view {
+    margin: auto;
+    height: 25px;
+    width: 98%;
+    background-color: var(--dark-color, black);
+border-top-left-radius: 60%;
+border-top-right-radius: 60%;
+}
 .pop-up-view {
     position: relative;
     background-color: var(--white-color, white);
@@ -47,7 +61,7 @@ p {
     color: var(--primary-color, red);
     position: absolute;
     font-size: 3.5em;
-    top: 2.5%;
+    top: 1%;
     right: 10%;
 }
 
@@ -79,23 +93,8 @@ p {
     color: var(--light-color, white);
 }
 
-.expand-view-button {
-    position: absolute;
-    background-color: var(--primary-color, black);
-    color: var(--white-color, white);
-    border-radius: 50%;
-    height: 30px;
-    width: 30px;
-    font-size: 1.75em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    right: 7.5%;
-    bottom: 10%;
-}
-
 .clicked {
     background-color: var(--white-color, white);
-    color: var(--gray-color, darkgray);
-    opacity: 25%;
+    color: var(--dark-gray-color, #626262);
+    opacity: 50% !important;
 }
