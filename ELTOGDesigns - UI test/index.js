@@ -28,14 +28,18 @@ function registerNewProduct(id, name, price, description, photoSources) {
 registerNewProduct(1, "Logo", 50, "Your visual identity is one of the concerns of logo design", ["./logo.png"]);
 registerNewProduct(2, "Flyer", 250, "How to annonce your event, present your products? Maybe, a well-designed flyer is the answer to your question", ["./flyer.png"]);
 
-let productHtml = "";
+
 // Add your code below this line
 products.forEach(product => {
-    productHtml += '<div class="card product-div" productid="' + product.getId() + '"><div class="card-header"><h4>' + product.name + '</h4></div><div class="card-body">' + /*markedResult(*/ product.description /*)*/ ;
-    productHtml += '</div></div>'
+ let divContainer = document.createElement("div");
+ 
+ let productHtml = "";
+    productHtml += '<div class="card product-div" productid="' + product.getId() + '"><div class="card-header"><h4>' + product.name + '</h4></div><div class="card-body"><img src="' +product.photoSources +'" alt="photo of a ' + product.name + '"><br>' + markedResult(product.description);
+    productHtml += '</div></div>';
+    divContainer.innerHTML = productHtml;
+    $("main").append(divContainer);
 })
 
-    $("main").html(productHtml);
 // Add your code above this line
 function checkIdAlreadyAssigned(arr, id) {
     return arr.some(item => id == item.getId());
@@ -80,9 +84,22 @@ function toPopUpView() {
    $popUpText.html(product.description);
 }
 
+
 function getProductById(arr, id) {
-    let arrProduct = arr.filter(item => item.getId() == id);
-    return arrProduct[0];
+    return arr[getProductIndexById(arr, id)];
+}
+
+function getProductIndexById(arr, id) {
+    if (checkIdAlreadyAssigned(arr, id)) {
+    return arr.reduce((acc,item, idx) => {
+       if (item.getId() == id) {
+           acc = idx;
+       }
+       return acc;
+    }, 0);
+    } else {
+        console.error("Id not found");
+    }
 }
 
 function orderProduct() {
