@@ -1,6 +1,6 @@
-let hackingFeedback = document.querySelector("#hacking-feedback");
-let levelDisplay = document.querySelector("#process");
-let result = document.querySelector("#result");
+const hackingFeedback = document.querySelector("#hacking-feedback");
+const levelDisplay = document.querySelector("#process");
+const result = document.querySelector("#result");
 
 function hackingFake(target, second) {
     let progressLevel = 0;
@@ -8,38 +8,44 @@ function hackingFake(target, second) {
     let success = false;
     let dataFetching = false;
     let progressInterval = setInterval(() => {
-       
-   if (dataFetching) {
-       let readingDataMessage = document.createTextNode(`Reading ${target} data ...`);
-                  let dataFetchingParagraph = document.createElement("p");
-                  let p = dataFetchingParagraph.appendChild(readingDataMessage);
-                  hackingFeedback.after(p);
-                  clearInterval(progressInterval);
-   }
-   
-      else if (success) {
-           let finalParagraph = document.createElement("p");
-           let finalMessage = document.createTextNode("Hacking successful");
-           let p = finalParagraph.appendChild(finalMessage);
-           hackingFeedback.appendChild(p);
-           success = false;
-           dataFetching = true
-       }
-       else if (!started) {
-    levelDisplay.innerHTML =`Starting hacking ${target}...`;
-           started = true;
-       }
-       else if (progressLevel > 0 && progressLevel < 100) {
-           result.innerHTML =`Progress : ${progressLevel}%`;
-           progressLevel += second;
-       }
-       else if (progressLevel == 0) {
-            result.innerHTML =`Progress : ${progressLevel}%`;
-            progressLevel += second;
+
+        if (dataFetching) {
+            let readingDataMessage = `Reading ${target} data ...`;
+
+            let dataFetchingParagraph = document.createElement("p");
+            let p = dataFetchingParagraph.appendChild(document.createTextNode(readingDataMessage));
+            hackingFeedback.after(p);
+            console.log(readingDataMessage);
+            clearInterval(progressInterval);
         }
-        else if (progressLevel == 100) {
-            result.innerHTML =`Progress : ${progressLevel}%`;
-            success = true;
+
+        else if (success) {
+            let progressMessage = `Progress : ${progressLevel}%`;
+            result.innerHTML = progressMessage;
+            console.log(progressMessage);
+            let finalMessage = "Hacking successful";
+            let finalParagraph = document.createElement("p");
+            let p = finalParagraph.appendChild(document.createTextNode(finalMessage));
+            hackingFeedback.appendChild(p);
+            console.log(finalMessage);
+            success = false;
+            dataFetching = true
+        }
+        else if (!started) {
+            let start = `Starting hacking ${target}...`;
+            levelDisplay.innerHTML = start;
+            console.log(start);
+            started = true;
+        }
+        else if (progressLevel >= 0 && progressLevel <= 100) {
+            let progressMessage = `Progress : ${progressLevel}%`;
+            result.innerHTML = progressMessage;
+            console.log(progressMessage);
+
+            progressLevel += second;
+            if (progressLevel == 100) {
+                success = true;
+            }
         }
     }, second * 100);
 }
