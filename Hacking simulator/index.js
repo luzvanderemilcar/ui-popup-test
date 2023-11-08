@@ -12,7 +12,6 @@ function hackingFake(target, second) {
         if (dataFetching) {
             let readingDataMessage = `Reading ${target} data ...`;
 
-            let dataFetchingParagraph = document.createElement("p");
             let p = dataFetchingParagraph.appendChild(document.createTextNode(readingDataMessage));
             hackingFeedback.after(p);
             console.log(readingDataMessage);
