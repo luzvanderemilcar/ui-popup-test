@@ -1,3 +1,6 @@
+import {calculate, add, multiply,divide, subtract, modulo } from "./caculator-function.js";
+
+console.log(multiply(2,3))
 //Regex to test the input
 const operatorRegex = /[+\-×÷]/g;
 const numberRegex = /[0-9]/g;
@@ -54,10 +57,10 @@ let dataProcess = "+";
 //console.log(inputCheck(stringProcess, dataProcess))
 console.log(operatorRegex.test(stringProcess));
 console.log(operatorRegex.test(dataProcess));
-// There is a bug here, I test the same thing with two different result
+// There is a bug here, I test the same input with two different result
 
-console.log(operatorRegex.test(dataProcess));
 console.log(operatorRegex.test(stringProcess));
+console.log(operatorRegex.test(dataProcess));
 
 function haveDecimalPoint(str) {
     let arrNumbers = str.split(operatorRegex);
