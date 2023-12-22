@@ -1,3 +1,4 @@
+
 let products = [];
 
 const Product = function(id, name, price, description, photoSources) {
@@ -25,7 +26,7 @@ function registerNewProduct(id, name, price, description, photoSources) {
     }
 }
 
-registerNewProduct(1, "Logo", 50, "Your visual identity is one of the concerns of logo design", ["./logo.png"]);
+registerNewProduct(1, "Logo", 50, "Your visual identity is one of the concerns of logo design\nA logo is a visual representant of an enterprise. A logo tells a lot about the enterprise' products, missions, values or goals. That is, if you you want your logo to bring your real message, you need to be carefull on how to design it.\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.", ["./logo.png"]);
 registerNewProduct(2, "Flyer", 250, "How to annonce your event, present your products? Maybe, a well-designed flyer is the answer to your question", ["./flyer.png"]);
 
 
@@ -37,7 +38,7 @@ products.forEach(product => {
     productHtml += '<div class="card product-div" productid="' + product.getId() + '"><div class="card-header"><h4>' + product.name + '</h4></div><div class="card-body"><img src="' +product.photoSources +'" alt="photo of a ' + product.name + '"><br>' + markedResult(product.description);
     productHtml += '</div></div>';
     divContainer.innerHTML = productHtml;
-    $("main").append(divContainer);
+    $("#main-products").append(divContainer);
 })
 
 // Add your code above this line
@@ -46,11 +47,11 @@ function checkIdAlreadyAssigned(arr, id) {
 }
 
 
-// DOM Elements 
-$popUpContainer = $(".container.pop-up");
+// DOM Elements
+$popUpElement = $("#current-pop-up")
+$popUpBar = $("#current-pop-up .top-view");
 $popUpHeading = $("#current-pop-up h3");
 $popUpText = $("#current-pop-up div.info");
-$popUpTopView = $(".top-view");
 $closePopUpViewButton = $(".close-button");
 $primaryCta = $(".primary-cta");
 $secondaryCta = $(".secondary-cta")
@@ -58,11 +59,61 @@ $secondaryCta = $(".secondary-cta")
 $productDiv = $(".product-div");
 
 
-// Event Listeners 
-$popUpTopView.on("click", () => {
-    applyClickEffectToElement($(this));
-    //alert("PopUpView Top Got Clicked");
-});
+let popUpLastRelativePosition = {top : 0,
+left : 0};
+
+// Interact.js
+
+
+interact("#current-pop-up")
+  .resizable({
+    // resize from all edges and corners except top
+        edges: { left: true, right: true, bottom: true, top: false },
+
+        listeners: {
+            move(event) {
+                var target = event.target
+                var x = (parseFloat(target.getAttribute('data-x')) || 0)
+                var y = (parseFloat(target.getAttribute('data-y')) || 0)
+
+                // update the element's style
+                target.style.width = event.rect.width + 'px'
+                target.style.height = event.rect.height + 'px'
+
+                // translate when resizing from top or left edges
+                x += event.deltaRect.left
+                y += event.deltaRect.top
+
+                target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
+
+                target.setAttribute('data-x', x)
+                target.setAttribute('data-y', y)
+            }
+        },
+        modifiers: [
+      // keep the edges inside the parent
+      interact.modifiers.restrictEdges({
+                outer: 'parent'
+            }),
+
+      // minimum size
+      interact.modifiers.restrictSize({
+                min: { width: 100, height: 50 }
+            })
+    ],
+
+        inertia: true
+    })
+    .draggable({
+        listeners: { move: window.dragMoveListener },
+        inertia: true,
+        modifiers: [
+      interact.modifiers.restrictRect({
+                restriction: 'parent',
+                endOnly: true
+            })
+    ]
+    });
 
 $closePopUpViewButton.on("click", closePopUpView);
 $primaryCta.on("click", orderProduct);
@@ -73,13 +124,17 @@ $productDiv.on("dblclick", toPopUpView);
 
 function closePopUpView() {
     applyClickEffectToElement($(this));
-    $("#current-pop-up").css("display", "none");
+    $popUpElement.css("visibility", "hidden");
 }
 
 function toPopUpView() {
    let currentProductId = $(this).attr("productid");
    let product = getProductById(products, currentProductId);
-   $("#current-pop-up").css("display", "block");
+   // set top initial position for 
+   let [x,y] = [window.scrollX, window.scrollY];
+   $popUpElement.css("top", y + 20);
+   $popUpElement.css("left", x +20);
+   $popUpElement.css("visibility", "visible");
    $popUpHeading.html(product.name);
    $popUpText.html(product.description);
 }

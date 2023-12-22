@@ -1,0 +1,186 @@
+interact.js
+Help protect internet freedom. Donate to the EFF.
+Docs
+Community
+Account
+JavaScript drag and drop, resizing, and multi-touch gestures for modern browsers (and also IE9+)
+version1.10.23
+ 
+
+Features
+Free and open source
+Powerful snap and restriction modifiers
+Inertial throwing
+Multiple simultaneous interactions
+Unified API for touch and mouse events
+Auto scroll
+Support for HTML and SVG
+How does it work?
+interact.js takes a slightly different approach compared to most drag and drop libraries. To give you as much control as possible, it tries to provide a simple, flexible API that gives you all the pointer event data you’ll need to move elements around.
+
+The library doesn’t even do any moving at all! This is great because you decide exactly what feedback your users get. You can drag elements, draw on a canvas or (if you really need to) scroll the page.
+
+Have a look at the demos below to get an idea of how the API works, or read through the documentation.
+
+Rainbow pixel canvas
+
+Dragging
+<div id="drag-1" class="draggable">
+  <p> You can drag one element </p>
+</div>
+<div id="drag-2" class="draggable">
+  <p> with each pointer </p>
+</div>
+Drag and drop
+<div id="no-drop" class="drag-drop"> #no-drop </div>
+
+<div id="yes-drop" class="drag-drop"> #yes-drop </div>
+
+<div id="outer-dropzone" class="dropzone">
+  #outer-dropzone
+  <div id="inner-dropzone" class="dropzone">#inner-dropzone</div>
+ </div>
+Snapping
+#grid-snap {
+  width: 40%;
+  border-radius: 4px;
+  padding: 2%;
+  margin: 1rem 0 0 1rem;
+  background-color: #29e;
+  color: #fff;
+  font-size: 1.2em;
+  touch-action: none;
+}
+Resizing
+interact('.resize-drag')
+  .resizable({
+    // resize from all edges and corners
+
+    listeners: {
+      move (event) {
+        var target = event.target
+        var x = (parseFloat(target.getAttribute('data-x')) || 0)
+        var y = (parseFloat(target.getAttribute('data-y')) || 0)
+
+        // update the element's style
+        target.style.width = event.rect.width + 'px'
+        target.style.height = event.rect.height + 'px'
+
+        // translate when resizing from top or left edges
+        x += event.deltaRect.left
+        y += event.deltaRect.top
+
+        target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
+
+        target.setAttribute('data-x', x)
+        target.setAttribute('data-y', y)
+        target.textContent = Math.round(event.rect.width) + '\u00D7' + Math.round(event.rect.height)
+      }
+    },
+    modifiers: [
+      // keep the edges inside the parent
+      interact.modifiers.restrictEdges({
+        outer: 'parent'
+      }),
+
+      // minimum size
+      interact.modifiers.restrictSize({
+        min: { width: 100, height: 50 }
+      })
+    ],
+
+    inertia: true
+  })
+  .draggable({
+    listeners: { move: window.dragMoveListener },
+    inertia: true,
+    modifiers: [
+      interact.modifiers.restrictRect({
+        restriction: 'parent',
+        endOnly: true
+      })
+    ]
+  })
+  
+Multi-touch Rotation (touchscreen only)
+<div id="rotate-area">
+  <div id="angle-info">0°</div>
+  <svg id="arrow" viewBox="0 0 100 100">
+    <polygon points="50,0 75,25 62.5,25 62.5,100 37.5,100 37.5,25 25,25" fill="#29e"></polygon>
+  </svg>
+</div>
+Pinch-to-zoom (touchscreen only)
+var angleScale = {
+  angle: 0,
+  scale: 1
+}
+var gestureArea = document.getElementById('gesture-area')
+var scaleElement = document.getElementById('scale-element')
+var resetTimeout
+
+interact(gestureArea)
+  .gesturable({
+    listeners: {
+      start (event) {
+        angleScale.angle -= event.angle
+
+        clearTimeout(resetTimeout)
+        scaleElement.classList.remove('reset')
+      },
+      move (event) {
+        // document.body.appendChild(new Text(event.scale))
+        var currentAngle = event.angle + angleScale.angle
+        var currentScale = event.scale * angleScale.scale
+
+        scaleElement.style.transform =
+          'rotate(' + currentAngle + 'deg)' + 'scale(' + currentScale + ')'
+
+        // uses the dragMoveListener from the draggable demo above
+        dragMoveListener(event)
+      },
+      end (event) {
+        angleScale.angle = angleScale.angle + event.angle
+        angleScale.scale = angleScale.scale * event.scale
+
+        resetTimeout = setTimeout(reset, 1000)
+        scaleElement.classList.add('reset')
+      }
+    }
+  })
+  .draggable({
+    listeners: { move: dragMoveListener }
+  })
+
+function reset () {
+  scaleElement.style.transform = 'scale(1)'
+
+  angleScale.angle = 0
+  angleScale.scale = 1
+}
+Use in SVG files
+<div class="star-wrapper">
+  <object id="star-demo" type="image/svg+xml" data="/img/star.svg" alt="embedded svg"></object>
+
+  <p style="padding: 0 5%">
+    The <a href="https://github.com/taye/interact.js/blob/master/examples/star/star.svg?short_path=e1e0fe0">star.svg</a>
+    file references interact.js as well as
+    <a href="https://github.com/taye/interact.js/blob/master/examples/star/index.js"> another script</a>
+    to enable and respond to drag events.
+  </p>
+</div>
+Tap, doubletap and hold
+interact.js Homepage
+Documentation
+Source code on Github
+Gitter chatroom
+@interactjs on Twitter
+Privacy Policy
+
+
+By Taye Adeyemi ©2012-present
+
+Subscribe to our spam-free newsletter to stay up to date with new features and releases
+First Name
+Name
+Email address
+mail@example.com
