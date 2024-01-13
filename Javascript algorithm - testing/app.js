@@ -66,3 +66,10 @@ function haveDecimalPoint(str) {
     let arrNumbers = str.split(operatorRegex);
     return /[.]/.test(arrNumbers[arrNumbers.length - 1]);
 }
+
+let myObject = {
+    firstname: "Luzvander",
+    lastname: "EMILCAR",
+    age: 28
+}
+console.log(myObject.gender)
