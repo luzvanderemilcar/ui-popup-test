@@ -1,3 +1,3 @@
-## CSV Reader- Javascript
+## CSV Reader - Javascript
 ____
-This module is intended to help manipulate cs file content
+This module is intended to help manipulate csv file content
