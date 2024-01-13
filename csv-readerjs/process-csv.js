@@ -75,4 +75,32 @@ function updateValue(dataArray, idValue, key, keyValue) {
     }
 }
 
-export {reader, searchIndexByKey, findRows, updateValue};
+
+function csvFormater(...args) {
+    
+    let dataArray, separator;
+    if (args.length == 1) {
+            [dataArray, separator] = [args[0], ","];
+    }
+    else if (args.length == 2) {
+            [dataArray, separator] = [args[0],args[1]];
+    }
+    
+    let headerRow = Object.keys(dataArray[0]);
+    let rowsArray = dataArray.map(obj=> {
+        let rowString = [];
+        headerRow.forEach(key =>{
+            rowString.push(obj[key])
+        })
+        return rowString.join(separator)
+    })
+    let completeData = rowsArray.slice();
+    completeData
+        .unshift(headerRow.join(separator));
+        
+    let completeDataCsv = completeData.join("\n");
+    return completeDataCsv;
+}
+
+
+export {reader, searchIndexByKey, findRows, updateValue, csvFormater};
