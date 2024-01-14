@@ -24,16 +24,16 @@ function reader(...args) {
 }
 
 //Search a row with key-value pair, returns index
-function searchIndexByKey(...args) {
-
-    let dataArray, key,keyValue ;
-    // default search key to "ID"
-    if (args.length == 2) {
-        [dataArray, key ,keyValue] = [args[0], "ID", args[1]];
-    }
-    else if (args.length ==3) {
-        [dataArray, key, keyValue] = args;
-    }
+function searchIndexByKey(dataArray,...args) {
+    
+        let key, keyValue;
+        // default search key to "ID"
+        if (args.length == 1) {
+            [key, keyValue] = ["ID", args[0]];
+        }
+        else if (args.length == 2) {
+            [key, keyValue] = args;
+        }
         let idx;
         let i = 0;
         let indexFound = false;
@@ -62,7 +62,7 @@ function findRows(dataArray, key, keyValue) {
 }
 
 // Update the key-value pair of a row with specific idValue
-function updateValue(dataArray, idValue, key, keyValue) {
+function updateRow(dataArray, idValue, key, keyValue) {
 
     let index = searchIndexByKey(dataArray,idValue);
     if (typeof index == "number") {
@@ -73,6 +73,37 @@ function updateValue(dataArray, idValue, key, keyValue) {
         }
         return [dataArray[index]]
     }
+}
+
+function addRow(dataArray,...args) {
+    let headerRow = Object.keys(dataArray[0]);
+    if (args.length == headerRow.length) {
+        let dataRow = {};
+        for (let i = 0; i < headerRow.length; i++) {
+            dataRow[headerRow[i]] = args[i]
+        }
+        dataArray.push(dataRow)
+    } else {
+        console.log("Incorrect Value : Check data input")
+    }
+}
+
+
+//Delete a row
+function deleteRow(dataArray,...args) {
+    
+   /* let key, keyValue;
+    if (args.length == 1) {
+        [key,keyValue] = ["ID", args[0]]
+    } 
+    else if (args.length ==2) {
+          [key,keyValue] = args
+    }*/
+    let index = searchIndexByKey(dataArray, ...args);
+    if (typeof index == "number") {
+        dataArray.splice(index,1)
+    }
+    
 }
 
 
@@ -103,4 +134,4 @@ function csvFormater(...args) {
 }
 
 
-export {reader, searchIndexByKey, findRows, updateValue, csvFormater};
+export {reader, searchIndexByKey, findRows, updateRow, addRow, deleteRow, csvFormater};
