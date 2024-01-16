@@ -112,15 +112,17 @@ function complexSearch(dataObjectsArray,...args) {
 }
 
 
-function getRowsFromIndexes(dataObjectsArray, input) {
+function getRowsFromIndexes(dataObjectsArray, indexInput) {
+    let indexArray = [];
     if (typeof input == "number") {
-        return dataObjectsArray[input]
+        indexArray.push(indexInput)
     }
-    else if (Array.isArray(input)) {
-        return dataObjectsArray.filter((dataRow,idx) => {
-            return input.includes(idx)
-        })
+    else if (Array.isArray(indexInput)) {
+        indexArray = [...indexInput]
     }
+    return dataObjectsArray.filter((dataRow,idx) => {
+        return indexArray.includes(idx)
+    })
 }
 
 
