@@ -1,5 +1,5 @@
-//Read csv file data with a specific separator
-function reader(...args) {
+//Read csv file data with a specific separatorcsvReader l, separator optional
+function csvReader(...args) {
     let text, separator;
     
    // Default column separator to ","
@@ -12,19 +12,19 @@ function reader(...args) {
     
     let data = text.split("\n")
     let header = data[0].split(separator);
-    let dataArray = [];
+    let dataObjectsArray = [];
     for (let i = 1; i < data.length; i++) {
         let row = data[i].split(separator);
-        dataArray[i] = {};
-        for (let j = 0; j < row.length; j++) {
-            dataArray[i][header[j]] = row[j];
+        dataObjectsArray[i] = {};
+        for (let j = 0; j < row.length; j++) {csvReader
+            dataObjectsArray[i][header[j]] = row[j];
         }
     }
-    return dataArray.slice(1,dataArray.length);
+    return dataObjectsArray.slice(1,dataObjectsArray.length);
 }
 
 //Search a row with key-value pair, returns index
-function searchIndexByKey(dataArray,...args) {
+function findRowIndexByKeyValue(dataObjectsArray,...args) {
     
         let key, keyValue;
         // default search key to "ID"
@@ -37,8 +37,8 @@ function searchIndexByKey(dataArray,...args) {
         let idx;
         let i = 0;
         let indexFound = false;
-        while (!indexFound && i < dataArray.length) {
-            let dataRow = dataArray[i];
+        while (!indexFound && i < dataObjectsArray.length) {
+            let dataRow = dataObjectsArray[i];
         for (let objKey in dataRow) {
             if (objKey == key && dataRow[objKey] == keyValue) {
                 idx = i;
@@ -54,35 +54,99 @@ function searchIndexByKey(dataArray,...args) {
         }
 }
 
-//Find multiple? rows that match key-value pair
-function findRows(dataArray, key, keyValue) {
-    return dataArray.filter(row => {
-        return row[key] == keyValue
-    })
+
+// Search data passed as string, array or object. With number of counts and separator for string input optionals
+function complexSearch(dataObjectsArray,...args) {
+    let searchPattern, matchCountNumber, separator;
+    let lookUpValues;
+    
+    //Flexible search entries Setting
+    if (args.length == 1) {
+        [searchPattern, matchCountNumber, separator] = [args[0], 1, ","]
+    }
+    else if (args.length == 2) {
+            [searchPattern, matchCountNumber, separator] = [args[0], args[1], ","]
+    }
+    else if (args.length == 3) {
+            [searchPattern, matchCountNumber, separator] = args
+    }
+   
+   //Check the type of searchPattern
+    if (typeof searchPattern == "string") {
+        if (searchPattern.includes(separator)) {
+        lookUpValues = string.split(separator)
+        } else {
+            // Handle single value string
+            lookUpValues = [searchPattern]
+        }
+    }
+    else if (typeof searchPattern == "number")  {
+        // Handle single value number
+        lookUpValues = [searchPattern.toString()]
+    }
+    else if (Array.isArray(searchPattern)) {
+        lookUpValues = searchPattern
+    }
+    else if (searchPattern instanceof Object) {
+        lookUpValues = Object.values(searchPattern)
+    }
+
+    let matchedRowIndexes = dataObjectsArray.reduce((accumulator, dataRow,idx) => {
+        let rowValues = Object.values(dataRow);
+        let matchCount = 0;
+        
+        //Process each row of search pattern 
+        lookUpValues.forEach(itemToSearch => {
+            if (rowValues.includes(itemToSearch)) {
+                matchCount++;
+            }
+        })
+        
+        if (matchCount >= matchCountNumber) {
+            accumulator.push(idx);
+        }
+        return accumulator
+    }, []);
+    
+    return matchedRowIndexes
 }
 
-// Update the key-value pair of a row with specific idValue
-function updateRow(dataArray, idValue, key, keyValue) {
 
-    let index = searchIndexByKey(dataArray,idValue);
-    if (typeof index == "number") {
-        if (dataArray[index].hasOwnProperty(key)) {
-            dataArray[index][key] = keyValue
-        } else {
-            console.log(`Property ${key} not found`)
-        }
-        return [dataArray[index]]
+function getRowsFromIndexes(dataObjectsArray, input) {
+    if (typeof input == "number") {
+        return dataObjectsArray[input]
+    }
+    else if (Array.isArray(input)) {
+        return dataObjectsArray.filter((dataRow,idx) => {
+            return input.includes(idx)
+        })
     }
 }
 
-function addRow(dataArray,...args) {
-    let headerRow = Object.keys(dataArray[0]);
+
+// Update the key-value pair of a row with specific idValue
+function updateRow(dataObjectsArray, idValue, key, keyValue) {
+
+    let idx = findRowIndexByKeyValue(dataObjectsArray,idValue);
+    if (typeof idx == "number") {
+        if (dataObjectsArray[idx].hasOwnProperty(key)) {
+            dataObjectsArray[idx][key] = keyValue
+        } else {
+            console.log(`Property ${key} not found`)
+        }
+        return [dataObjectsArray[idx]]
+    }
+}
+
+
+function addRow(dataObjectsArray,...args) {
+    let headerRow = Object.keys(dataObjectsArray[0]);
     if (args.length == headerRow.length) {
         let dataRow = {};
         for (let i = 0; i < headerRow.length; i++) {
             dataRow[headerRow[i]] = args[i]
         }
-        dataArray.push(dataRow)
+        dataObjectsArray.push(dataRow)
     } else {
         console.log("Incorrect Value : Check data input")
     }
@@ -90,41 +154,33 @@ function addRow(dataArray,...args) {
 
 
 //Delete a row
-function deleteRow(dataArray,...args) {
+function deleteRow(dataObjectsArray,...args) {
     
-   /* let key, keyValue;
-    if (args.length == 1) {
-        [key,keyValue] = ["ID", args[0]]
-    } 
-    else if (args.length ==2) {
-          [key,keyValue] = args
-    }*/
-    let index = searchIndexByKey(dataArray, ...args);
-    if (typeof index == "number") {
-        dataArray.splice(index,1)
+    let idx = findRowIndexByKeyValue(dataObjectsArray, ...args);
+    if (typeof idx == "number") {
+        dataObjectsArray.splice(idx,1)
     }
     
 }
 
 
-function csvFormater(...args) {
+function csvFormater(dataObjectsArray,...args) {
     
-    let dataArray, separator;
-    if (args.length == 1) {
-            [dataArray, separator] = [args[0], ","];
+    let separator;
+    if (args.length == 0) {
+            separator = ",";
     }
-    else if (args.length == 2) {
-            [dataArray, separator] = [args[0],args[1]];
+    else if (args.length == 1) {
+            separator = args[0];
     }
     
-    let headerRow = Object.keys(dataArray[0]);
-    let rowsArray = dataArray.map(obj=> {
-        let rowString = [];
-        headerRow.forEach(key =>{
-            rowString.push(obj[key])
-        })
-        return rowString.join(separator)
+    let headerRow = Object.keys(dataObjectsArray[0]);
+    let rowsArray = dataObjectsArray.map(obj=> {
+        let rowArray = Object.values(obj);
+        return rowArray.join(separator)
     })
+    
+    //Adding headerRow at the top of data
     let completeData = rowsArray.slice();
     completeData
         .unshift(headerRow.join(separator));
@@ -134,4 +190,4 @@ function csvFormater(...args) {
 }
 
 
-export {reader, searchIndexByKey, findRows, updateRow, addRow, deleteRow, csvFormater};
+export {csvReader, findRowIndexByKeyValue, complexSearch, getRowsFromIndexes, updateRow, addRow, deleteRow, csvFormater};
