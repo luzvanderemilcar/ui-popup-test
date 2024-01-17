@@ -12,15 +12,16 @@ function csvReader(...args) {
     
     let data = text.split("\n")
     let header = data[0].split(separator);
-    let dataObjectsArray = [];
-    for (let i = 1; i < data.length; i++) {
-        let row = data[i].split(separator);
-        dataObjectsArray[i] = {};
-        for (let j = 0; j < row.length; j++) {csvReader
-            dataObjectsArray[i][header[j]] = row[j];
-        }
-    }
-    return dataObjectsArray.slice(1,dataObjectsArray.length);
+    let dataArray = data.slice(1, data.length);
+    
+    return dataArray.map((row) => {
+        let dataObject = {};
+        //Iterate inside header row to set property value 
+        header.forEach((property, idx) => {
+            dataObject[property] = row.split(separator)[idx]
+            })
+        return dataObject
+        })
 }
 
 //Search a row with key-value pair, returns index
@@ -145,12 +146,12 @@ function addRow(dataObjectsArray,...args) {
     let headerRow = Object.keys(dataObjectsArray[0]);
     if (args.length == headerRow.length) {
         let dataRow = {};
-        for (let i = 0; i < headerRow.length; i++) {
-            dataRow[headerRow[i]] = args[i]
-        }
+        headerRow.forEach((property,idx) => {
+            dataRow[property] = args[idx]
+        })
         dataObjectsArray.push(dataRow)
     } else {
-        console.log("Incorrect Value : Check data input")
+        console.log("Incorrect Row Input: Check data input")
     }
 }
 

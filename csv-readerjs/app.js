@@ -7,7 +7,7 @@ console.log(str);
 fwrite(file, content);*/
 
 let csvData = `ID;Non;Siyati;Nesans;Ville;Stati;Referans
-6;Xtr;YYIBD;1087;Place 4;atyi,Je xnnh`;
+6;Xtr;YYIBD;1087;Place 4;atyi;Je xnnh`;
 
 let dataObjectsArray = csvReader(csvData,";");
 let row1 = [4,"Jkdb","EOBDKS", "3758","Pjdjjtk", "khsu", "oudnn Mbdjdbn"];
