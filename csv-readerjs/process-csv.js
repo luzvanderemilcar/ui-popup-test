@@ -56,7 +56,7 @@ function findRowIndexByKeyValue(dataObjectsArray,...args) {
 }
 
 
-// Search data passed as string, array or object. With number of counts and separator for string input optionals
+// Search data passed as string, array or object. With number of counts and string input separator optionals
 function complexSearch(dataObjectsArray,...args) {
     let searchPattern, matchCountNumber, separator;
     let lookUpValues;
@@ -102,13 +102,13 @@ function complexSearch(dataObjectsArray,...args) {
                 matchCount++;
             }
         })
-        
+        // check occurrences of search result
         if (matchCount >= matchCountNumber) {
             accumulator.push(idx);
         }
         return accumulator
     }, []);
-    
+     
     return matchedRowIndexes
 }
 
@@ -144,13 +144,22 @@ function updateRow(dataObjectsArray, idValue, key, keyValue) {
 
 function addRow(dataObjectsArray,...args) {
     let headerRow = Object.keys(dataObjectsArray[0]);
+    let dataInput;
     if (args.length == headerRow.length) {
+        dataInput = args
+    }
+    else if (args.length == 1 && Array.isArray(args[0])) {
+        dataInput = args[0]
+    }
+    
+    if (dataInput.length == headerRow.length) {
         let dataRow = {};
-        headerRow.forEach((property,idx) => {
-            dataRow[property] = args[idx]
+        headerRow.forEach((property, idx) => {
+            dataRow[property] = dataInput[idx]
         })
         dataObjectsArray.push(dataRow)
-    } else {
+    }
+    else {
         console.log("Incorrect Row Input: Check data input")
     }
 }
@@ -193,4 +202,4 @@ function csvFormater(dataObjectsArray,...args) {
 }
 
 
-export {csvReader, findRowIndexByKeyValue, complexSearch, getRowsFromIndexes, updateRow, addRow, deleteRow, csvFormater};
+export default {csvReader, findRowIndexByKeyValue, complexSearch, getRowsFromIndexes, updateRow, addRow, deleteRow, csvFormater};
