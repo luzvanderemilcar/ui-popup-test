@@ -1,7 +1,7 @@
 //import {csvReader, findRowIndexByKeyValue, complexSearch, getRowsFromIndexes, updateRow, addRow, deleteRow, csvFormater} 
 import Reader from "./process-csv.js";
 import cryptaGener from "/Cipher/cipher.js";
-import tableCreator from "./tableCreator.js";
+import tableCreator from "./table-creator.js";
 
 /*/ file to open, read and write 
 file = fopen("./aj_members.csv", 3);
@@ -28,5 +28,5 @@ console.table(dataObjectsArray)
 const tableDisplay = document.querySelector("#table-wrapper");
 
 // create a table from dataArray and append it to a wrapper
-tableCreator(dataObjectsArray, tableDisplay);
+tableCreator(dataObjectsArray, tableDisplay, {rowsToStrip : [1,3], columnsToStrip : ["Siyati", "Vil"]});
 
