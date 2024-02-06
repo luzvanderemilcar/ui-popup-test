@@ -32,4 +32,4 @@ console.log(dataObjectsArray[0].Vil)
 
 const tableDisplay2 = document.querySelector("#table2-wrapper");
 
-tableCreator(dataObjectsArray, tableDisplay2);
+tableCreator(dataObjectsArray, tableDisplay2,{rowsToStrip:[1], columnsToStrip : ["Siyati", "Vil", "Nesans"]});

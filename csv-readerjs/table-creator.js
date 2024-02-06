@@ -12,7 +12,7 @@ else if (args.length == 2) {
     }
 }
 
-let processedDataObjectsArray = dataObjectsArray.map(obj => obj);
+let processedDataObjectsArray = dataObjectsArray.slice();
 
 if (options.hasOwnProperty("columnsToStrip")) {
     processedDataObjectsArray = stripColumn (processedDataObjectsArray, options.columnsToStrip);
@@ -66,12 +66,15 @@ function stripRow(dataObjectsArray, rowsToStrip) {
 }
 
 function stripColumn(dataObjectsArray, columnsToStrip) {
-    dataObjectsArray.forEach(dataRow => {
+    
+    return dataObjectsArray.map(dataRow => {
+       
+        let objectData = {};
         for (let column in dataRow) {
-            if (columnsToStrip.includes(column)) {
-               delete dataRow[column]
+            if (!columnsToStrip.includes(column)) {
+            objectData[column] = dataRow[column]
             }
         }
+        return objectData
     });
- return dataObjectsArray;
 }
