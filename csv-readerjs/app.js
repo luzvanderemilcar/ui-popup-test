@@ -21,12 +21,15 @@ Reader.addRow(dataObjectsArray,row1);
 console.table(Reader.getRowsFromIndexes(dataObjectsArray, Reader.complexSearch(dataObjectsArray, 6)));
 console.log(Reader.complexSearch(dataObjectsArray, "4"))
 console.log(Reader.csvFormater(dataObjectsArray,";"));
-console.table(dataObjectsArray)
-
 
 //select the current wrapper
 const tableDisplay = document.querySelector("#table-wrapper");
 
 // create a table from dataArray and append it to a wrapper
-tableCreator(dataObjectsArray, tableDisplay, {rowsToStrip : [1,3], columnsToStrip : ["Siyati", "Vil"]});
+//tableCreator(dataObjectsArray, tableDisplay, {rowsToStrip : [1], columnsToStrip : ["Siyati", "Vil"]});
 
+console.log(dataObjectsArray[0].Vil)
+
+const tableDisplay2 = document.querySelector("#table2-wrapper");
+
+tableCreator(dataObjectsArray, tableDisplay2);

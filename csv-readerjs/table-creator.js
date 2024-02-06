@@ -4,19 +4,33 @@ const newTable = document.createElement("table");
  let dataObjectsArray, wrapper, options;
 if (args.length == 3) {
     [dataObjectsArray, wrapper, options] = args;
-}
-if (options.hasOwnProperty("columnsToStrip")) {
-    dataObjectsArray = stripColumn (dataObjectsArray, options.columnsToStrip);
+} 
+else if (args.length == 2) {
+    [dataObjectsArray, wrapper] = args;
+    options = {
+        
+    }
 }
 
+let processedDataObjectsArray = dataObjectsArray.map(obj => obj);
+
+if (options.hasOwnProperty("columnsToStrip")) {
+    processedDataObjectsArray = stripColumn (processedDataObjectsArray, options.columnsToStrip);
+}
+console.table(dataObjectsArray)
+console.table(processedDataObjectsArray)
+
+if (options.hasOwnProperty("rowsToStrip")) {
+    processedDataObjectsArray = stripRow (processedDataObjectsArray, options.rowsToStrip);
+}
 
 // Finding the value of the header
-let headerRowArray = Object.keys(dataObjectsArray[0]);
+let headerRowArray = Object.keys(processedDataObjectsArray[0]);
 
 // create the header row
 rowCreator(newTable, headerRowArray, true);
 
-dataObjectsArray.forEach(object => {
+processedDataObjectsArray.forEach(object => {
     let rowValuesArray = Object.values(object);
     
     // create data a data row
@@ -47,26 +61,17 @@ function rowCreator(table, arrayOfValues, isHeaderRow) {
     table.appendChild(row);
 }
 
-function stripRow(arr) {
-    mainArray = arr.slice()
-    mainArray.forEach(dataRow => {
-        for (let column in dataRow) {
-            if (arr.includes(column)) {
-                delete dataRow[column]
-            }
-        }
-    });
-    return mainArray;
+function stripRow(dataObjectsArray, rowsToStrip) {
+    return dataObjectsArray.filter((dataRow, index)=> !rowsToStrip.includes(index + 1));
 }
 
 function stripColumn(dataObjectsArray, columnsToStrip) {
-    let mainArray = dataObjectsArray.slice()
-    mainArray.forEach(dataRow => {
+    dataObjectsArray.forEach(dataRow => {
         for (let column in dataRow) {
             if (columnsToStrip.includes(column)) {
                delete dataRow[column]
             }
         }
     });
-    return mainArray;
+ return dataObjectsArray;
 }

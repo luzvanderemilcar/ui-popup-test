@@ -1,4 +1,3 @@
-//Read csv file data with a specific separatorcsvReader l, separator optional
 function csvReader(...args) {
     let text, separator;
     
@@ -92,7 +91,7 @@ function complexSearch(dataObjectsArray,...args) {
         lookUpValues = Object.values(searchPattern)
     }
 
-    let matchedRowIndexes = dataObjectsArray.reduce((accumulator, dataRow,idx) => {
+    let matchedRowsIndex = dataObjectsArray.reduce((accumulator, dataRow,idx) => {
         let rowValues = Object.values(dataRow);
         let matchCount = 0;
         
@@ -109,7 +108,7 @@ function complexSearch(dataObjectsArray,...args) {
         return accumulator
     }, []);
      
-    return matchedRowIndexes
+    return matchedRowsIndex
 }
 
 
