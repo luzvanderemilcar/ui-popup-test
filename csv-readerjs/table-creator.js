@@ -1,58 +1,58 @@
 export default function tableCreator(...args) {
-const newTable = document.createElement("table");
-   
- let dataObjectsArray, wrapper, options;
-if (args.length == 3) {
+    const newTable = document.createElement("table");
+
+    let dataObjectsArray, wrapper, options;
+    if (args.length == 3) {
     [dataObjectsArray, wrapper, options] = args;
-} 
-else if (args.length == 2) {
-    [dataObjectsArray, wrapper] = args;
-    options = {
-        
     }
-}
+    else if (args.length == 2) {
+    [dataObjectsArray, wrapper] = args;
+        options = {
 
-let processedDataObjectsArray = dataObjectsArray.slice();
+        }
+    }
 
-if (options.hasOwnProperty("columnsToStrip")) {
-    processedDataObjectsArray = stripColumn (processedDataObjectsArray, options.columnsToStrip);
-}
-console.table(dataObjectsArray)
-console.table(processedDataObjectsArray)
+    let processedDataObjectsArray = dataObjectsArray.slice();
 
-if (options.hasOwnProperty("rowsToStrip")) {
-    processedDataObjectsArray = stripRow (processedDataObjectsArray, options.rowsToStrip);
-}
+    if (options.hasOwnProperty("columnsToStrip")) {
+        processedDataObjectsArray = stripColumn(processedDataObjectsArray, options.columnsToStrip);
+    }
+    console.table(dataObjectsArray)
+    console.table(processedDataObjectsArray)
 
-// Finding the value of the header
-let headerRowArray = Object.keys(processedDataObjectsArray[0]);
+    if (options.hasOwnProperty("rowsToStrip")) {
+        processedDataObjectsArray = stripRow(processedDataObjectsArray, options.rowsToStrip, true);
+    }
 
-// create the header row
-rowCreator(newTable, headerRowArray, true);
+    // Finding the value of the header
+    let headerRowArray = Object.keys(processedDataObjectsArray[0]);
 
-processedDataObjectsArray.forEach(object => {
-    let rowValuesArray = Object.values(object);
-    
-    // create data a data row
-    rowCreator(newTable, rowValuesArray)
-});
+    // create the header row
+    rowCreator(newTable, headerRowArray, true);
 
-wrapper.appendChild(newTable);
+    processedDataObjectsArray.forEach(object => {
+        let rowValuesArray = Object.values(object);
+
+        // create data a data row
+        rowCreator(newTable, rowValuesArray)
+    });
+
+    wrapper.appendChild(newTable);
 }
 
 function rowCreator(table, arrayOfValues, isHeaderRow) {
-    
+
     // create a new row element 
     let row = document.createElement("tr");
     let rowDataElements = arrayOfValues.forEach((value) => {
         let valueTag;
-        
+
         if (isHeaderRow) {
             valueTag = document.createElement("th");
         } else {
             valueTag = document.createElement("td");
         }
-        
+
         // insert data into cell
         valueTag.textContent = value;
         row.appendChild(valueTag)
@@ -61,20 +61,44 @@ function rowCreator(table, arrayOfValues, isHeaderRow) {
     table.appendChild(row);
 }
 
-function stripRow(dataObjectsArray, rowsToStrip) {
-    return dataObjectsArray.filter((dataRow, index)=> !rowsToStrip.includes(index + 1));
+// Strip a list of row by indexes
+function stripRow(dataObjectsArray, rowsToStrip, isMutable) {
+
+    if (isMutable) {
+        let numberOfRowDeleted = 0;
+        rowsToStrip.forEach((index) => {
+            dataObjectsArray.splice(index + numberOfRowDeleted - 1, 1)
+            numberOfRowDeleted++
+        });
+        return dataObjectsArray
+    } else {
+        return dataObjectsArray.filter((dataRow, index) => !rowsToStrip.includes(index + 1));
+    }
 }
 
-function stripColumn(dataObjectsArray, columnsToStrip) {
-    
-    return dataObjectsArray.map(dataRow => {
-       
-        let objectData = {};
-        for (let column in dataRow) {
-            if (!columnsToStrip.includes(column)) {
-            objectData[column] = dataRow[column]
+
+// strip a list of column by header name
+function stripColumn(dataObjectsArray, columnsToStrip, isMutable) {
+
+    if (isMutable) {
+        dataObjectsArray.forEach(dataRow => {
+            for (let column in dataRow) {
+                if (columnsToStrip.includes(column)) {
+                    delete dataRow[column]
+                }
             }
-        }
-        return objectData
-    });
+        });
+        return dataObjectsArray
+    } else {
+        return dataObjectsArray.map(dataRow => {
+
+            let objectData = {};
+            for (let column in dataRow) {
+                if (!columnsToStrip.includes(column)) {
+                    objectData[column] = dataRow[column]
+                }
+            }
+            return objectData
+        });
+    }
 }
