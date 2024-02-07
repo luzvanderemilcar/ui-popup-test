@@ -15,7 +15,8 @@ function csvReader(...args) {
     
     return dataArray.map((row) => {
         let dataObject = {};
-        //Iterate inside header row to set property value 
+        
+        //Iterate inside header row to set property value from row array
         header.forEach((property, idx) => {
             dataObject[property] = row.split(separator)[idx]
             })
@@ -23,7 +24,7 @@ function csvReader(...args) {
         })
 }
 
-//Search a row with key-value pair, returns index
+//Search a row with key-value pair inside an array, returns an index
 function findRowIndexByKeyValue(dataObjectsArray,...args) {
     
         let key, keyValue;
@@ -111,10 +112,15 @@ function complexSearch(dataObjectsArray,...args) {
     return matchedRowsIndex
 }
 
+/*
+Take an array of objects and an index or an
+array of indexes ; return a filtered array of
+object
+*/
 
 function getRowsFromIndexes(dataObjectsArray, indexInput) {
     let indexArray = [];
-    if (typeof input == "number") {
+    if (typeof inputIndex == "number") {
         indexArray.push(indexInput)
     }
     else if (Array.isArray(indexInput)) {
@@ -130,6 +136,7 @@ function getRowsFromIndexes(dataObjectsArray, indexInput) {
 function updateRow(dataObjectsArray, idValue, key, keyValue) {
 
     let idx = findRowIndexByKeyValue(dataObjectsArray,idValue);
+    
     if (typeof idx == "number") {
         if (dataObjectsArray[idx].hasOwnProperty(key)) {
             dataObjectsArray[idx][key] = keyValue
@@ -192,11 +199,9 @@ function csvFormater(dataObjectsArray,...args) {
     })
     
     //Adding headerRow at the top of data
-    let completeData = rowsArray.slice();
-    completeData
-        .unshift(headerRow.join(separator));
+   rowsArray.unshift(headerRow.join(separator));
         
-    let completeDataCsv = completeData.join("\n");
+    let completeDataCsv = rowsArray.join("\n");
     return completeDataCsv;
 }
 
