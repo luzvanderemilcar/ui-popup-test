@@ -14,7 +14,7 @@ export default function createTable(...args) {
         }
     }
 
-// handle data filtering for table row and/or column 
+    // handle data filtering for table row and/or column 
     if (options.hasOwnProperty("rowsToStrip")) {
         dataObjectsArray = stripRow(dataObjectsArray, options.rowsToStrip, options.mutateRow);
     }
@@ -25,13 +25,13 @@ export default function createTable(...args) {
     // Finding the value of the header
     let headerRowArray = Object.keys(dataObjectsArray[0]);
 
-    // create the header row
+    // append header row into table element 
     rowCreator(newTable, headerRowArray, true);
 
     dataObjectsArray.forEach(object => {
         let rowValuesArray = Object.values(object);
 
-        // create a data row for each object
+        // append data row into table element for each object
         rowCreator(newTable, rowValuesArray)
     });
 
@@ -61,17 +61,22 @@ function rowCreator(table, arrayOfValues, isHeaderRow) {
 
 // Strip a list of row by indexes
 function stripRow(dataObjectsArray, rowsToStrip, isMutableRow) {
-
-    if (isMutableRow) {
-        let numberOfRowDeleted = 0;
-        rowsToStrip.forEach((index) => {
-            dataObjectsArray.splice(index - numberOfRowDeleted - 1, 1)
-            numberOfRowDeleted++
-        });
-        return dataObjectsArray
-    } else {
-        return dataObjectsArray.filter((dataRow, index) => !rowsToStrip.includes(index + 1));
+    
+// Condition to prevent row emptying
+    if (dataObjectsArray.length == rowsToStrip.length) {
+        rowsToStrip.pop();
+        console.error("There should have at least one data row remaining inside the table")
     }
+        if (isMutableRow) {
+            let numberOfRowDeleted = 0;
+            rowsToStrip.forEach((index) => {
+                dataObjectsArray.splice(index - numberOfRowDeleted - 1, 1)
+                numberOfRowDeleted++
+            });
+            return dataObjectsArray
+        } else {
+            return dataObjectsArray.filter((dataRow, index) => !rowsToStrip.includes(index + 1));
+        }
 }
 
 
