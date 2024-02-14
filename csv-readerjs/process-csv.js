@@ -63,7 +63,7 @@ function complexSearch(dataObjectsArray, ...args) {
     let defaultSearchCriterion = {
         separator : ",",
         numberOfMatch : 1,
-        strictFilterSearch : false
+        matchExact : false
     };
     
     let lookUpValues;
@@ -81,7 +81,7 @@ function complexSearch(dataObjectsArray, ...args) {
     //Check the type of searchPattern
     if (typeof searchPattern == "string") {
         if (searchPattern.includes(searchCriterion.separator)) {
-            lookUpValues = string.split(separator)
+            lookUpValues = string.split(searchCriterion.separator)
         } else {
             // Handle single value string
             lookUpValues = [searchPattern]

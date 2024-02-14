@@ -3,6 +3,7 @@ body {
 }
 
 h1 {
+    margin: 2.5rem auto 2rem 1.5rem;
     text-decoration: overline
 }
 
@@ -14,6 +15,10 @@ h1 {
 form * {
     display: block;
     margin-top: .5rem;
+}
+
+form label {
+    font-weight : bold;
 }
 
 table {

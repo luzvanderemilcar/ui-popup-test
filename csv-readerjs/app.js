@@ -39,7 +39,7 @@ createTable(dataObjectsArray, tableDisplay);
 
 const tableDisplay2 = document.querySelector("#table2-wrapper");
 
-//createTable(dataObjectsArray, tableDisplay2, { rowsToStrip: [1, 2, 3], mutateRow: true, columnsToStrip: ["Nesans", "Vil", "Siyati", "Referans", "Stati", "Non"], mutateColumn: true });
+createTable(dataObjectsArray, tableDisplay2, { rowsToStrip: [1, 2], mutateRow: true, columnsToStrip: ["Nesans", "Vil", "Siyati", "Referans", "Stati", "Non"], mutateColumn: true });
 
 console.table(dataObjectsArray)
 
