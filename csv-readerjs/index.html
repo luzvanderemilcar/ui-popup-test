@@ -1,17 +1,30 @@
   <!DOCTYPE html>
-<html>
+  <html>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CSV Reader</title>
-  <link rel="stylesheet" href="./styles.css">
-</head>
-<body>
-<h1>CSV - Reader</h1>
-<div id="table-wrapper"></div>
-<div id="table2-wrapper"></div>
-</body>
-<script src="./app.js" type="module"></script>
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>CSV Reader</title>
+      <link rel="stylesheet" href="./styles.css">
+  </head>
 
-</html>
+  <body>
+      <header>
+          <h1>CSV - Reader</h1>
+      </header>
+      <main class="container">
+          <form id="search-form">
+              <label for="filter-check">Match exact</label>
+              <input id="filter-check" type="checkbox" name="filtercheck"></input>
+              <label for="input">Search</label>
+              <input id="input" type="text" name="searchdata" placeholder="Enter your search">
+              <button type="submit">Search</button>
+          </form>
+          <hr>
+          <div id="table-wrapper"></div>
+          <div id="table2-wrapper"></div>
+      </main>
+  </body>
+  <script src="./app.js" type="module"></script>
+
+  </html>

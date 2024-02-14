@@ -1,13 +1,15 @@
 //Encryption 
 export default function cryptaGener(text, key, direction, separator) {
-    let alphabet = "abcdefjhijklmnopqrstuvwxyzABCDEFJHIJKLMNOPQRSTUVWXYZ";
+    let alphabet = "abcdefjhijklmnopqrstuvwxyz";
     
     let keyIndex = 0;
     let processedText = "";
-
+    let lowerKey = key.toLowerCase();
+    
     for (let i = 0; i < text.length; i++) {
         
         // Test the case of a character
+        let isUpperCased = /[A-Z]/g.test(text[i]);
         
         let character = text[i].toLowerCase();
 
@@ -15,15 +17,24 @@ export default function cryptaGener(text, key, direction, separator) {
             processedText += character
         } else {
             
-            let keyChar = key[keyIndex % 
-            key.length];
+            let keyChar = lowerKey[keyIndex % 
+            lowerKey.length];
+            
+            console.log(keyIndex % lowerKey.length)
             keyIndex += 1;
 
             let offset, charIndex, newCharIndex;
             offset = alphabet.indexOf(keyChar);
             charIndex = alphabet.indexOf(character);
             newCharIndex = (charIndex + offset * direction) % alphabet.length;
+            
+            if (isUpperCased) {
+                console.log(alphabet[newCharIndex])
+                
+                processedText += stringToUpperCase(alphabet[newCharIndex])
+            } else {
             processedText += alphabet[newCharIndex]
+            }
         }
 
     }
@@ -31,6 +42,6 @@ export default function cryptaGener(text, key, direction, separator) {
     return processedText
 }
 
-function uppercase(text) {
+function stringToUpperCase(text) {
     return text.toUpperCase()
 }

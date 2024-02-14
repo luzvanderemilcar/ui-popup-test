@@ -1,6 +1,6 @@
 //import {csvReader, findRowIndexByKeyValue, complexSearch, getRowsFromIndexes, updateRow, addRow, deleteRow, csvFormater} 
 import Reader from "./process-csv.js";
-import cryptaGener from "/Cipher/cipher.js";
+import cryptaGener from "/Cipher/cipher1.js";
 import createTable from "./table-creator.js";
 
 /*/ file to open, read and write 
@@ -9,8 +9,11 @@ str = fread(file, flength(file));
 console.log(str);
 fwrite(file, content);*/
 
-cryptaGener("Luzvander EMILCAR;28", "exposure", 1, ";")
-cryptaGener("pROJsHuiv BBwDwrv;28", "exposure", -1, ";")
+
+let data = "Luzvander EMILCAR;28";
+
+let dataEncrypted = cryptaGener(data, "exposure", 1, ";")
+cryptaGener(dataEncrypted, "exposure", -1, ";")
 
 let csvData = `Id;Non;Siyati;Nesans;Vil;Stati;Referans
 6;Xtr;YYIBD;1087;Place 4;atyi;Je xnnh`;
@@ -31,11 +34,28 @@ console.log(Reader.csvFormater(dataObjectsArray, ";"));
 //select the current wrapper
 const tableDisplay = document.querySelector("#table-wrapper");
 
-// create a table from dataArray and append it to a wrapper
+// create a table from a array of objects (first parameter) and append it to a wrapper (second)
 createTable(dataObjectsArray, tableDisplay);
 
 const tableDisplay2 = document.querySelector("#table2-wrapper");
 
-createTable(dataObjectsArray, tableDisplay2, { rowsToStrip: [1, 2, 3, 4], mutateRow: true, columnsToStrip: ["Nesans", "Id", "Vil", "Siyati", "Referans", "Stati", "Non"], mutateColumn: true });
+//createTable(dataObjectsArray, tableDisplay2, { rowsToStrip: [1, 2, 3], mutateRow: true, columnsToStrip: ["Nesans", "Vil", "Siyati", "Referans", "Stati", "Non"], mutateColumn: true });
 
 console.table(dataObjectsArray)
+
+const searchForm = document.querySelector("#search-form");
+
+searchForm.addEventListener("submit", searchDataByInput);
+
+function searchDataByInput(e) {
+    // get input value end remove space around
+  const userInput = searchForm.elements.searchdata.value.trim();
+let strictFilterSearch = searchForm.elements.filtercheck.checked;
+    let matchedDataIndex = Reader.complexSearch(dataObjectsArray, userInput,{"strictFilterSearch" : strictFilterSearch});
+    
+    let matchedDataObjectsArray = Reader.getRowsFromIndexes(dataObjectsArray, ...matchedDataIndex);
+    
+    createTable(matchedDataObjectsArray,tableDisplay2)
+    
+    e.preventDefault()
+}

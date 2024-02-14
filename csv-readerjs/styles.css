@@ -3,13 +3,21 @@ body {
 }
 
 h1 {
-    margin: 2rem;
-    text-decoration: underline
+    text-decoration: overline
+}
+
+
+.container {
+    margin: auto 1rem;
+}
+
+form * {
+    display: block;
+    margin-top: .5rem;
 }
 
 table {
     border: solid 1px black;
-    margin: 2rem
 }
 
 

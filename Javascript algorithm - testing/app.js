@@ -72,4 +72,41 @@ let myObject = {
     lastname: "EMILCAR",
     age: 28
 }
-console.log(myObject.gender)
+console.log(myObject.gender);
+
+let userProvidedId = 138;
+const mainUrl = "https://dai.ly/x5b0pykkdk";
+let settings = {
+    method: "GET",
+    mode: "cors",
+    headers: {
+        'Content-Type': 'application/json'
+    }
+}
+
+
+try {
+const currentUser = await getUser(mainUrl, settings, userProvidedId);
+} catch(err) {
+    console.log(err)
+}
+    
+
+
+
+function getUser(url, options, userId) {
+    // Convert JSON response into usable data 
+    /*
+    const data = await response.json();
+
+      const response = await fetch(url, options);
+      let matchedUser ;
+      for (let user of data) {
+        if (user.id == userId) {
+            matedchuser = user
+        }
+        break;
+      }
+      return matchedUser;
+      */
+}
