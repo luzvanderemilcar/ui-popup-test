@@ -22,9 +22,12 @@ form label {
 }
 
 table {
-    border: solid 1px black;
+    border: solid 1px black
 }
 
+.table-display {
+    margin-top : 2.5rem;
+}
 
 th {
     padding: 5px;

@@ -21,10 +21,11 @@ It is required for data processing.
 
 The function returns an **array of objects**. Every object has properties inherited from the header and row data as respective key-value pair.
 
-`
-let csvContent = "Id;Non;Siyati;Nesans;Vil;Stati;Referans\n6;Xtr;YYIBD;1087;Place 4;atyi,Je xnnh"
+```
+let csvContent = `Id;Non;Siyati;Nesans;Vil;Stati;Referans\n6;Xtr;YYIBD;1087;Place 4;atyi,Je xnnh`
 
-let data = csvReader(csvContent, ";");```
+let data = csvReader(csvContent, ";");
+```
 
 #### Search data with complexSearch()
 

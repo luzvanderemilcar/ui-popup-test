@@ -31,6 +31,7 @@ console.table(Reader.getRowsFromIndexes(dataObjectsArray, Reader.complexSearch(d
 console.log(Reader.complexSearch(dataObjectsArray, "4"))
 console.log(Reader.csvFormater(dataObjectsArray, ";"));
 
+
 //select the current wrapper
 const tableDisplay = document.querySelector("#table-wrapper");
 
@@ -39,7 +40,7 @@ createTable(dataObjectsArray, tableDisplay);
 
 const tableDisplay2 = document.querySelector("#table2-wrapper");
 
-createTable(dataObjectsArray, tableDisplay2, { rowsToStrip: [1, 2], mutateRow: true, columnsToStrip: ["Nesans", "Vil", "Siyati", "Referans", "Stati", "Non"], mutateColumn: true });
+createTable(dataObjectsArray, tableDisplay2, { rowsToStrip: [1, 2], mutateRow: false, columnsToStrip: ["Nesans", "Vil", "Siyati", "Referans"], mutateColumn: true });
 
 console.table(dataObjectsArray)
 
@@ -55,7 +56,33 @@ let strictFilterSearch = searchForm.elements.filtercheck.checked;
     
     let matchedDataObjectsArray = Reader.getRowsFromIndexes(dataObjectsArray, ...matchedDataIndex);
     
-    createTable(matchedDataObjectsArray,tableDisplay2)
+   try {
+       createTable(matchedDataObjectsArray,tableDisplay2)
+   } catch(error) {
+       tableDisplay2.innerHTML = `<strong>${userInput}</strong> Not Found`;
+       console.error(error)
+   }
     
     e.preventDefault()
 }
+
+const formRegisterContainer = document.querySelector("#register-form");
+
+function formRegisterCreator(obj) {
+    const formRegisterElement = document.createElement("form");
+    let fieldNameList = Object.keys(obj);
+    
+    fieldNameList.forEach(key => {
+        let labelElement = document.createElement("label");
+        let inputField = document.createElement("input");
+        formRegisterElement.appendChild(labelElement);
+        formRegisterElement.appendChild(inputField)
+    });
+    const submitButton = document.createElement("button","Submit");
+    submitButton.setAttribute("type", "submit");
+    formRegisterElement.appendChild(submitButton);
+    
+    formRegisterContainer.append(formRegisterElement)
+}
+
+formRegisterCreator(dataObjectsArray[0])
