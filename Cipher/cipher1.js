@@ -45,6 +45,11 @@ export default function cryptaGener(text, key, direction, separator) {
     return processedText
 }
 
+
+function isUpperCased(char) {
+    return /[A-Z]/g.test(char);
+}
+
 function stringToUpperCase(char) {
     return char.toUpperCase()
 }
