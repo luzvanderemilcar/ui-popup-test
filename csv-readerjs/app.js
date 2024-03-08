@@ -1,20 +1,21 @@
 //import {csvReader, findRowIndexByKeyValue, complexSearch, getRowsFromIndexes, updateRow, addRow, deleteRow, csvFormater} 
 import Reader from "./process-csv.js";
-import cryptaGener from "/Cipher/cipher1.js";
+import {encrypt, decrypt} from "/Cipher/cipher.js";
 import createTable from "./table-creator.js";
 
 let data = "Luzvander EMILCAR;28";
 
-let dataEncrypted = cryptaGener(data, "exposure", 1, ";")
-cryptaGener(dataEncrypted, "exposure", -1, ";")
+let dataEncrypted = encrypt(data, "exposure")
+decrypt(dataEncrypted, "exposure")
 
 $("h1").html("Suprise");
 
 function getDataFromFile() {
-    let csvFile = $('link[data-src]');
-    let src = csvFile.attr('data-src');
+    let csvLink = $('link[data-src]');
+    let src = csvLink.attr('data-src');
     $.get(src, (fileContent) => {
-        let dataObjectsArray = Reader.csvReader(fileContent, ";");
+    
+        let dataObjectsArray = Reader.csvReader(decrypt(fileContent, "exposition"), ";");
         console.table(dataObjectsArray)
         let row2 = [4, "Jkdb", "EOBDKS", "3758", "Pjdjjtk", "khsu", "oudnn Mbdjdbn"];
         let row3 = [7, "Job", "EOBDKS", "5589", "jelznn", "prodd", "oudnn Mbdjdbn"];
