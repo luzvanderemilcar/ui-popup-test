@@ -175,7 +175,9 @@ function addRow(dataObjectsArray, ...args) {
         headerRow.forEach((property, idx) => {
             dataRow[property] = dataInput[idx]
         })
+        if (!isRowExist(dataObjectsArray, dataRow)) {
         dataObjectsArray.push(dataRow)
+        }
     }
     else {
         console.log("Incorrect Row Input: Check data input")
@@ -217,5 +219,14 @@ function csvFormater(dataObjectsArray, ...args) {
     return completeDataCsv;
 }
 
+function isRowExist(dataObjectsArray, rowObject) {
+    dataObjectsArray.forEach(row => {
+        if (Object.values(row).join() == Object.values(rowObject).join()) {
+            return true
+        }
+    })
+    
+    return false
+}
 
 export default { csvReader, findRowIndexByKeyValue, complexSearch, getRowsFromIndexes, updateRow, addRow, deleteRow, csvFormater };

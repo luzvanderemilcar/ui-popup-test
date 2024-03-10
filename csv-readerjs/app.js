@@ -10,6 +10,10 @@ decrypt(dataEncrypted, "exposure")
 
 $("h1").html("Suprise");
 
+const formRegisterContainer = document.querySelector("#register-form");
+const tableDisplay2 = document.querySelector("#table2-wrapper");
+
+
 function getDataFromFile() {
     let csvLink = $('link[data-src]');
     let src = csvLink.attr('data-src');
@@ -24,7 +28,7 @@ function getDataFromFile() {
         let row4 = [8, "jero", "EBOOKS", "6830", "matudv", "prvbw", "bute Rayen"];
         Reader.addRow(dataObjectsArray, row4);
 
-        console.table(Reader.getRowsFromIndexes(dataObjectsArray, Reader.complexSearch(dataObjectsArray, "7")));
+       // console.table(Reader.getRowsFromIndexes(dataObjectsArray, Reader.complexSearch(dataObjectsArray, "7")));
 
         console.log(Reader.complexSearch(dataObjectsArray, "4"))
         console.log(Reader.csvFormater(dataObjectsArray, ";"));
@@ -32,11 +36,10 @@ function getDataFromFile() {
 
         //select the current wrapper
 
-        const tableDisplay2 = document.querySelector("#table2-wrapper");
 
-        createTable(dataObjectsArray, tableDisplay2, { rowsToStrip: [1, 2], mutateRow: false, columnsToStrip: ["Nesans", "Vil", "Siyati", "Referans"], mutateColumn: true });
+      //  createTable(dataObjectsArray, tableDisplay2, { rowsToStrip: [1, 2], mutateRow: false, columnsToStrip: ["Nesans", "Vil", "Siyati", "Referans"], mutateColumn: true });
 
-        console.table(dataObjectsArray)
+        //console.table(dataObjectsArray)
 
         const searchForm = document.querySelector("#search-form");
 
@@ -59,10 +62,10 @@ function getDataFromFile() {
             e.preventDefault()
         }
 
-        const formRegisterContainer = document.querySelector("#register-form");
-        const formRegisterElement = document.createElement("form");
 
         function formRegisterCreator(obj) {
+            let formRegisterElement = document.createElement("form");
+            
             let fieldNameList = Object.keys(obj);
 
             fieldNameList.forEach(key => {
@@ -79,19 +82,43 @@ function getDataFromFile() {
             submitButton.textContent = "Add Row"
             formRegisterElement.appendChild(submitButton);
 
+            formRegisterElement.addEventListener("submit", addRowFromForm)
             formRegisterContainer.append(formRegisterElement);
-            formRegisterElement.addEventListener("submit", addRow)
         }
 
-        formRegisterCreator(dataObjectsArray[0]);
+formRegisterCreator(dataObjectsArray[0]);
+function addRowFromForm(e) {
 
-        function addRow(e) {
-            e.preventDefault();
-            let mainForm = e.target;
-            let idForm = mainForm.getAttribute("id");
-            let inputFields = document.querySelector(`#${idForm} input`);
-        }
-    });
+    let inputFields = e.target.getElementsByTagName("input");
+    console.log(inputFields[0]);
+    let row = {};
+    
+    for (let i = 0; i < inputFields.length; i++) {
+       let inputField = inputFields[i];
+    row[inputField.name] = inputField.value
+    }
+ try { 
+    Reader.addRow(dataObjectsArray, Object.values(row));
+    console.table(dataObjectsArray)
 }
+    catch (e) {
+        console.log(e)
+    }
+    
+    e.preventDefault();
+}
+    });
+   } 
 
 getDataFromFile();
+
+
+const terSearch = {
+    name : "Jean",
+    value : "4",
+    youpi : "ywkn"
+}
+
+
+let destruct = [...Object.values(terSearch)]
+console.log(destruct)
