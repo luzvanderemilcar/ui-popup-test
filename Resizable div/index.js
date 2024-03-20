@@ -11,7 +11,7 @@ const setFontSize = (element, val) => {
 setFontSize(resizableContainer,getElementWidth(resizableContainer))
 
 function getElementWidth(element) {
-    return parseFloat(element.style.width)
+    return element.style.width
 }
 
-console.log(parseFloat(resizable.style.width))
+console.log(resizable.style["z-index"], getElementWidth(resizable))

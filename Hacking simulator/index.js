@@ -49,3 +49,4 @@ function hackingFake(target, second) {
     }, second * 100);
 }
 
+hackingFake("NSA", 30)
