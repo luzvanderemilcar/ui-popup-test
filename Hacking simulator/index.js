@@ -4,49 +4,54 @@ const result = document.querySelector("#result");
 
 function hackingFake(target, second) {
     let progressLevel = 0;
+    let percentPerSecond = 100 / second;
     let started = false;
-    let success = false;
-    let dataFetching = false;
+    let hackingSuccessful = false;
+    let dataFetching = true;
     let progressInterval = setInterval(() => {
 
-        if (dataFetching) {
+        if (!dataFetching && hackingSuccessful) {
             let readingDataMessage = `Reading ${target} data ...`;
 
-            let p = dataFetchingParagraph.appendChild(document.createTextNode(readingDataMessage));
-            hackingFeedback.after(p);
+            let dataFetchingParagraph = document.createElement("p")
+                .appendChild(document.createTextNode(readingDataMessage));
+            hackingFeedback.after(dataFetchingParagraph);
+
             console.log(readingDataMessage);
             clearInterval(progressInterval);
         }
-
-        else if (success) {
-            let progressMessage = `Progress : ${progressLevel}%`;
+        else if (hackingSuccessful) {
+            let progressMessage = `Progress : 100%`;
             result.innerHTML = progressMessage;
             console.log(progressMessage);
             let finalMessage = "Hacking successful";
             let finalParagraph = document.createElement("p");
-            let p = finalParagraph.appendChild(document.createTextNode(finalMessage));
-            hackingFeedback.appendChild(p);
+            finalParagraph.appendChild(document.createTextNode(finalMessage));
+            hackingFeedback.appendChild(finalParagraph);
             console.log(finalMessage);
-            success = false;
-            dataFetching = true
+            dataFetching = false;
         }
+
         else if (!started) {
             let start = `Starting hacking ${target}...`;
             levelDisplay.innerHTML = start;
+            let progressMessage = `Progress : 0%`;
+            result.innerHTML = progressMessage;
             console.log(start);
+            console.log(progressMessage);
+            progressLevel += percentPerSecond;
             started = true;
         }
-        else if (progressLevel >= 0 && progressLevel <= 100) {
+        else if (started && dataFetching) {
             let progressMessage = `Progress : ${progressLevel}%`;
             result.innerHTML = progressMessage;
             console.log(progressMessage);
-
-            progressLevel += second;
-            if (progressLevel == 100) {
-                success = true;
+            progressLevel += percentPerSecond;
+            if (progressLevel >= 100) {
+                hackingSuccessful = true;
             }
         }
-    }, second * 100);
+    }, 1000);
 }
 
-hackingFake("NSA", 30)
+hackingFake("NSA", 7)
